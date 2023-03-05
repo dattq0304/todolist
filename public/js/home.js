@@ -1,7 +1,7 @@
 const newTaskForm = $('#new-task__form');
 const newTaskInput = $('#new-task__input');
 const tasks = $('#tasks');
-const taskApi = window.location.href + 'api/task';
+const taskApi = window.location.origin + '/api/task';
 console.log(taskApi);
 
 const addNewTask = (event) => {
