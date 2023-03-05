@@ -1,19 +1,17 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+require('dotenv').config();
 
 //TO FIX THIS WARNING: Mongoose: the `strictQuery` option will be switched back to `false` by default in Mongoose 7 ...
-mongoose.set("strictQuery", false)
+mongoose.set("strictQuery", false);
 
-// Connect to the local db
-/* 
-mongoose.connect('mongodb://127.0.0.1/todolist', {
-	useNewUrlParser: true,
-	useUnifiedTopology: true
-});
-*/
+//Connect to the  mongodb cloud | database: todolist
+const USERNAME = 'dattq0304';
+//const PASSWORD = process.env.MONGODB_PASSWORD;
+const PASSWORD = 'kmafiuqVn3H9P4LV';
+const URL = `mongodb+srv://${USERNAME}:${PASSWORD}@cluster0.aemt99q.mongodb.net/todolist?retryWrites=true&w=majority`;
 
-//Connect to the railway db
-mongoose.connect('mongodb://mongo:77WvuJcng0hDeo5bLIHw@containers-us-west-195.railway.app:7958', {
+mongoose.connect(URL, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true
 });
@@ -21,9 +19,9 @@ mongoose.connect('mongodb://mongo:77WvuJcng0hDeo5bLIHw@containers-us-west-195.ra
 const TaskSchema = new Schema({
 	title: String
 }, {
-	collection: 'todolist'
+	collection: 'works'
 });	
 
-const TaskModel = mongoose.model('todolis', TaskSchema);
+const TaskModel = mongoose.model('works', TaskSchema);
 
 module.exports = TaskModel;

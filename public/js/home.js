@@ -1,17 +1,17 @@
-
-const newTaskForm = $('#new-task__form')
-const newTaskInput = $('#new-task__input')
-const tasks = $('#tasks')
-const taskApi = 'https://todolist-production-ceb7.up.railway.app/api/task'
+const newTaskForm = $('#new-task__form');
+const newTaskInput = $('#new-task__input');
+const tasks = $('#tasks');
+const taskApi = window.location.href.replace('?', 'api/task');
+console.log(taskApi);
 
 const addNewTask = (event) => {
-	event.preventDefault()
+	event.preventDefault();
 	
-	let title = newTaskInput.val()
-	newTaskInput.val('')
+	let title = newTaskInput.val();
+	newTaskInput.val('');
 	
 	if(!title) {
-		return
+		return;
 	}
 	
 	$.ajax({
@@ -22,10 +22,10 @@ const addNewTask = (event) => {
 		}
 	})
 	.then(data => {
-		renderTask(data._id, data.title)
+		renderTask(data._id, data.title);
 	})
 	.catch(err => {
-		console.log(err)
+		console.log(err);
 	})
 }
 
@@ -40,9 +40,9 @@ const renderTask = (taskId, textInput) => {
 				</div>
 			</div>
 		</div>
-	`
+	`;
 	
-	tasks.append(taskHTML)
+	tasks.append(taskHTML);
 }
 
 const saveTask = (taskId, inputText) => {
@@ -54,41 +54,40 @@ const saveTask = (taskId, inputText) => {
 		}
 	})
 	.then(data => {
-		console.log(`Update thanh cong task co id: ${taskId}`)
+		console.log(`Successful update task: ${taskId}`);
 	})
 	.catch(err => {
-		console.log(err)
+		console.log(err);
 	})
 }
 
 const editTask = (event) => {
-	// Button sẽ là edit khi chưa sửa, save khi sửa xong
-	let buttonTarget = $(event.target) 
-	let task = buttonTarget.closest('.task')
-	let content = buttonTarget.closest('.task__content')
-	let contentInput = content.find('.task__content__text')
-	let taskId = task.data('id')
+	let buttonTarget = $(event.target) ;
+	let task = buttonTarget.closest('.task');
+	let content = buttonTarget.closest('.task__content');
+	let contentInput = content.find('.task__content__text');
+	let taskId = task.data('id');
 	
-	if(contentInput.prop('readonly')) { // Bắt đầu sửa
-		contentInput.prop('readonly', false) // Cho phép chỉnh sửa title
-		buttonTarget.text('Save') // Button khi đang sửa là save
-	} else { // Đang sửa
-		let newTitle = contentInput.val()
+	if(contentInput.prop('readonly')) {
+		contentInput.prop('readonly', false);
+		buttonTarget.text('Save');
+	} else { // Editting
+		let newTitle = contentInput.val();
 		
-		if(!newTitle) { //Kiểm tra title có hợp lệ
-			return //Không hợp lệ thì tiếp tục edit
+		if(!newTitle) { //Check validate 
+			return;
 		}
 		
 		contentInput.prop('readonly', true)
-		buttonTarget.text('Edit') // Button khi sửa xong là edit
+		buttonTarget.text('Edit');
 		
-		saveTask(taskId, newTitle) // Update trong db
+		saveTask(taskId, newTitle);
 	}
 }
 
 const deleteTask = (event) => {
-	let task = $(event.target).closest('.task')
-	let taskId = task.data('id')
+	let task = $(event.target).closest('.task');
+	let taskId = task.data('id');
 	
 	$.ajax({
 		url: `${taskApi}/${taskId}`,
@@ -96,32 +95,29 @@ const deleteTask = (event) => {
 	})
 	.then(data => {
 		task.remove()
-		console.log(data)
+		console.log(data);
 	})
 	.catch(err => {
-		console.log(err)
+		console.log(err);
 	})
 }
 
 const loadTask = () => {
 	$.ajax({
-        url: taskApi,
-        type: 'GET'
-    })
+    url: taskApi,
+    type: 'GET'
+  })
 	.then(data => {
 		for(let i = 0; i < data.length; i++) {
-			renderTask(data[i]._id, data[i].title)
+			renderTask(data[i]._id, data[i].title);
 		}
 	})
 	.catch(err => {
-        console.log(err)
-    })
+    console.log(err);
+  })
 }
 
-$(document).ready(loadTask)
-
-$(document).on('submit', newTaskForm, addNewTask)
-
-$(document).on('click', '.task__edit-button', editTask)
-
-$(document).on('click', '.task__delete-button', deleteTask)
+$(document).ready(loadTask);
+$(document).on('submit', newTaskForm, addNewTask);
+$(document).on('click', '.task__edit-button', editTask);
+$(document).on('click', '.task__delete-button', deleteTask);
