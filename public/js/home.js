@@ -62,27 +62,39 @@ const saveTask = (taskId, inputText) => {
 }
 
 const editTask = (event) => {
-	let buttonTarget = $(event.target) ;
+	let buttonTarget = $(event.target);
 	let task = buttonTarget.closest('.task');
-	let content = buttonTarget.closest('.task__content');
-	let contentInput = content.find('.task__content__text');
+	let content = buttonTarget.closest('.task__content').find('.task__content__text');
 	let taskId = task.data('id');
 	
-	if(contentInput.prop('readonly')) {
-		contentInput.prop('readonly', false);
+	if(content.prop('readonly')) {
+		content.prop('readonly', false);
 		buttonTarget.text('Save');
 	} else { // Editting
-		let newTitle = contentInput.val();
+		let newTitle = content.val();
 		
 		if(!newTitle) { //Check validate 
 			return;
 		}
-		
-		contentInput.prop('readonly', true)
+
+		content.prop('readonly', true);
 		buttonTarget.text('Edit');
-		
 		saveTask(taskId, newTitle);
 	}
+	
+	content.keypress((event) => {
+		if (event.keyCode === 13 && !content.prop('readonly')) {
+			let newTitle = content.val();
+		
+			if(!newTitle) { //Check validate 
+				return;
+			}
+
+			content.prop('readonly', true);
+			buttonTarget.text('Edit');
+			saveTask(taskId, newTitle);
+		}
+	});
 }
 
 const deleteTask = (event) => {
