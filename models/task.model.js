@@ -7,8 +7,7 @@ mongoose.set("strictQuery", false);
 
 //Connect to the  mongodb cloud | database: todolist
 const USERNAME = 'dattq0304';
-//const PASSWORD = process.env.MONGODB_PASSWORD;
-const PASSWORD = 'kmafiuqVn3H9P4LV';
+const PASSWORD = process.env.MONGODB_PASSWORD;
 const URL = `mongodb+srv://${USERNAME}:${PASSWORD}@cluster0.aemt99q.mongodb.net/todolist?retryWrites=true&w=majority`;
 
 mongoose.connect(URL, {
