@@ -38,7 +38,7 @@ router.put('/:id', (req, res, next) => {
 		res.json('Succesful update');
 	})
 	.catch((err) => {
-		res.status(500).json('Khong tim thay du lieu');
+		res.status(500).json('Data not found');
 	})
 })
 
